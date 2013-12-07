@@ -3,6 +3,7 @@
 #include "XSUB.h"
 #include "ppport.h"
 
+#include "perl_sparkey.h"
 #include <sparkey/sparkey.h>
 
 /* C functions */
@@ -24,6 +25,6 @@ new(filename)
 
     PPCODE:
     rc = sparkey_logwriter_create(&mywriter, filename, SPARKEY_COMPRESSION_NONE, 0);
+    perl_sparkey_assert_error(rc);
     EXTEND(SP, 1);
     PUSHs(sv_2mortal(newSVpv("0.42", 0)));
-
