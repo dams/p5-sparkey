@@ -19,4 +19,5 @@ Sparkey.bs
 *.c
 *.o
 *.spl
+*.spi
 .*.swp
