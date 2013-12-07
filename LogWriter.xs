@@ -15,16 +15,18 @@ PROTOTYPES: ENABLE
 # XS code
 
 const char *
-new(class, filename)
-    const char * class;
-    const char * filename;
+new(class, filename, compression_type=SPARKEY_COMPRESSION_NONE, compression_block_size=0)
+    const char * class
+    const char * filename
+    sparkey_compression_type compression_type
+    int compression_block_size
 
     PREINIT:
     sparkey_logwriter *mywriter;
     sparkey_returncode rc;
 
     PPCODE:
-    rc = sparkey_logwriter_create(&mywriter, filename, SPARKEY_COMPRESSION_NONE, 0);
+    rc = sparkey_logwriter_create(&mywriter, filename, compression_type, compression_block_size);
     perl_sparkey_assert_error(rc);
     EXTEND(SP, 1);
     PUSHs(sv_2mortal(newSVpv("0.42", 0)));

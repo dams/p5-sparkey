@@ -1,0 +1,12 @@
+TYPEMAP
+sparkey_compression_type SPARKEY_COMPRESSION_TYPE
+
+OUTPUT
+
+SPARKEY_COMPRESSION_TYPE
+    $arg = perl_sparkey_compression_type_to_string ($var);
+
+INPUT
+
+SPARKEY_COMPRESSION_TYPE
+    $var = perl_sparkey_string_to_compression_type ($arg);
