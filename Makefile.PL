@@ -6,7 +6,7 @@ WriteMakefile(
     PREREQ_PM      => { 'Test::More' => 0,
                         'Test::Exception' => 0 },
     ABSTRACT_FROM  => 'lib/Sparkey.pm',
-    AUTHOR         => [ 'Damien Krotkine', 'Emmanuel Peroumalnaik' ],
+    AUTHOR         => [ 'Damien Krotkine', 'Emmanuel Peroumalnaik', 'Fabrice Gabolde' ],
     LIBS           => ['-lsparkey'],
     DEFINE         => '',
     INC            => '-I.',
