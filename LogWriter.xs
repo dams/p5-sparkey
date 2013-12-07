@@ -4,6 +4,7 @@
 #include "ppport.h"
 
 #include <sparkey.h>
+#include "perl_sparkey.h"
 
 /* C functions */
 
@@ -14,8 +15,9 @@ PROTOTYPES: ENABLE
 # XS code
 
 const char *
-new(filename)
-    const char * filename
+new(class, filename)
+    const char * class;
+    const char * filename;
 
     PREINIT:
     sparkey_logwriter *mywriter;
@@ -23,6 +25,7 @@ new(filename)
 
     PPCODE:
     rc = sparkey_logwriter_create(&mywriter, filename, SPARKEY_COMPRESSION_NONE, 0);
+    perl_sparkey_assert_error(rc);
     EXTEND(SP, 1);
     PUSHs(sv_2mortal(newSVpv("0.42", 0)));
 
@@ -44,6 +47,7 @@ new(class,hash_filename,log_filename)
     PPCODE:
     // check the return code
     rc = sparkey_hash_write(hash_filename, log_filename, 0);
+    perl_sparkey_assert_error(rc);
     EXTEND(SP, 1);
     PUSHs(sv_2mortal(newSVpv("0.042", 0)));
 
