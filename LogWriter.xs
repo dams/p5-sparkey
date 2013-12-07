@@ -14,8 +14,9 @@ PROTOTYPES: ENABLE
 # XS code
 
 const char *
-new(filename)
-    const char * filename
+new(class, filename)
+    const char * class;
+    const char * filename;
 
     PREINIT:
     sparkey_logwriter *mywriter;
