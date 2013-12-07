@@ -16,7 +16,7 @@ nytprof.out
 pm_to_blib
 MYMETA.json
 Sparkey.bs
-Sparkey.c
-Sparkey.o
+*.c
+*.o
 *.spl
 .*.swp
