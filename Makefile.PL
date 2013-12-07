@@ -10,5 +10,9 @@ WriteMakefile(
     DEFINE         => '',
     INC            => '-I.',
     OBJECT         => '$(O_FILES)',
+    PREREQ_PM         => {
+        'XSLoader' => 0,
+    },
+
 );
 

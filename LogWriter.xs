@@ -7,7 +7,7 @@
 
 /* C functions */
 
-MODULE = Sparkey		PACKAGE = Sparkey		
+MODULE = Sparkey		PACKAGE = Sparkey::LogWriter
 
 PROTOTYPES: ENABLE
 
@@ -18,7 +18,6 @@ new(filename)
     const char * filename
 
     PREINIT:
-    sparkey_logwriter *l = malloc(sizeof(sparkey_logwriter * ));
     sparkey_logwriter *mywriter;
     sparkey_returncode rc;
 
