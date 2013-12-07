@@ -19,3 +19,4 @@ Sparkey.bs
 Sparkey.c
 Sparkey.o
 *.spl
+.*.swp

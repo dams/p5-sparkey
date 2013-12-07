@@ -3,7 +3,7 @@
 #include "XSUB.h"
 #include "ppport.h"
 
-#include <sparkey/sparkey.h>
+#include <sparkey.h>
 
 /* C functions */
 
