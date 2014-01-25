@@ -19,7 +19,6 @@ sub new {
       ? $class->_new_append($filename, @$rest)
       : $class->_new_create($filename, @$rest);
     $inside_out{$self}{log_path} = $filename;
-#    say STDERR Dumper(\%inside_out); use Data::Dumper;
     $self;
 }
 
