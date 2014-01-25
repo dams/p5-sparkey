@@ -1,6 +1,8 @@
 TYPEMAP
 sparkey_compression_type SPARKEY_COMPRESSION_TYPE
 
+Sparkey__LogWriter T_PTROBJ
+
 OUTPUT
 
 SPARKEY_COMPRESSION_TYPE

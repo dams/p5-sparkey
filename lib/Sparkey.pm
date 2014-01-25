@@ -1,5 +1,12 @@
 package Sparkey;
 
+
+=head1 NAME
+
+Sparkey - Perl binding for the Sparkey key-value storage database
+
+=cut
+
 use strict;
 use warnings;
 
