@@ -20,6 +20,9 @@ unlink('plop.spl');
     my $logwriter = Sparkey::LogWriter->new("plop.spl");
     isa_ok($logwriter, 'Sparkey::LogWriter');
     is($logwriter->log_path(), "plop.spl", "->log_path works");
+
+#die  Dumper($logwriter); use Data::Dumper;
+    ok($logwriter->put("foo", 'bar'), "put works");
 #    $log_path
 }
 

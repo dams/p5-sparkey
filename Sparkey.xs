@@ -43,7 +43,7 @@ PROTOTYPES: ENABLE
 
 # XS code
 
-Sparkey__LogWriter
+void
 _new_create(class, filename, compression_type=SPARKEY_COMPRESSION_NONE, compression_block_size=0)
     const char *class
     const char *filename
@@ -60,7 +60,7 @@ _new_create(class, filename, compression_type=SPARKEY_COMPRESSION_NONE, compress
 
     PUSHs( sv_setref_pv(sv_newmortal(), class, (void*)log));
 
-Sparkey__LogWriter
+void
 _new_append(class, filename)
     const char * class
     const char * filename
@@ -75,7 +75,7 @@ _new_append(class, filename)
 
     PUSHs( sv_setref_pv(sv_newmortal(), class, (void*)log));
 
-Sparkey__LogWriter
+void
 put(log, key, value)
     Sparkey__LogWriter log
     const char *key
@@ -108,7 +108,6 @@ new(class, hash_filename, log_filename)
     /* check the return code */
     rc = sparkey_hash_write(hash_filename, log_filename, 0);
     perl_sparkey_assert_error(rc);
-    EXTEND(SP, 1);
     PUSHs(sv_2mortal(newSVpv("0.042", 0)));
 
 
