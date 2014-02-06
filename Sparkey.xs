@@ -9,6 +9,8 @@
 #include <stdint.h>
 
 typedef sparkey_logwriter * Sparkey__LogWriter;
+typedef sparkey_logreader * Sparkey__LogReader;
+typedef sparkey_logiter * Sparkey__LogReader__Iterator;
 
 /* Utility functions */
 
@@ -23,7 +25,7 @@ SV * perl_sparkey_compression_type_to_string (sparkey_compression_type compressi
         return newSVpvs("none");
     if (compression_type == SPARKEY_COMPRESSION_SNAPPY)
         return newSVpvs("snappy");
-    croak("unexpected: unknown compression type. Should be one of 'none', 'snappy'");
+    croak("unexpected: unknown internal compression type");
 }
 
 sparkey_compression_type perl_sparkey_string_to_compression_type (SV * compression_type) {
@@ -32,7 +34,7 @@ sparkey_compression_type perl_sparkey_string_to_compression_type (SV * compressi
         return SPARKEY_COMPRESSION_NONE;
     if (strcasecmp(compression_type_str, "snappy") == 0)
         return SPARKEY_COMPRESSION_SNAPPY;
-    croak("Unknown compression type [TODO PUT COMPRESSION TYPE HERE]");
+    croak("Unknown compression type. Should be one of 'none', 'snappy'");
 }
 
 /* XS code */
@@ -51,14 +53,14 @@ _new_create(class, filename, compression_type=SPARKEY_COMPRESSION_NONE, compress
     int compression_block_size
 
     PREINIT:
-    sparkey_logwriter *log;
+    Sparkey__LogWriter log_writer;
     sparkey_returncode rc;
 
     PPCODE:
-    rc = sparkey_logwriter_create(&log, filename, compression_type, compression_block_size);
+    rc = sparkey_logwriter_create(&log_writer, filename, compression_type, compression_block_size);
     perl_sparkey_assert_error(rc);
 
-    PUSHs( sv_setref_pv(sv_newmortal(), class, (void*)log));
+    PUSHs( sv_setref_pv(sv_newmortal(), class, (void*)log_writer));
 
 void
 _new_append(class, filename)
@@ -66,18 +68,18 @@ _new_append(class, filename)
     const char * filename
 
     PREINIT:
-    sparkey_logwriter *log;
+    Sparkey__LogWriter log_writer;
     sparkey_returncode rc;
 
     PPCODE:
-    rc = sparkey_logwriter_append(&log, filename);
+    rc = sparkey_logwriter_append(&log_writer, filename);
     perl_sparkey_assert_error(rc);
 
-    PUSHs( sv_setref_pv(sv_newmortal(), class, (void*)log));
+    PUSHs( sv_setref_pv(sv_newmortal(), class, (void*)log_writer));
 
 void
-put(log, key, value)
-    Sparkey__LogWriter log
+put(log_writer, key, value)
+    Sparkey::LogWriter log_writer
     const char *key
     const char *value
 
@@ -85,17 +87,65 @@ put(log, key, value)
     sparkey_returncode rc;
 
     PPCODE:
-    rc = sparkey_logwriter_put(log, (uint64_t) strlen(key), (const uint8_t *)key, (uint64_t) strlen(value), (const uint8_t *)value);
+    rc = sparkey_logwriter_put(log_writer, (uint64_t) strlen(key), (const uint8_t *)key, (uint64_t) strlen(value), (const uint8_t *)value);
     perl_sparkey_assert_error(rc);
+
+void
+close(log_writer)
+    Sparkey::LogWriter log_writer
+
+    PREINIT:
+    sparkey_returncode rc;
+
+    PPCODE:
+    rc = sparkey_logwriter_close(&log_writer);
+    perl_sparkey_assert_error(rc);
+
+
+MODULE = Sparkey		PACKAGE = Sparkey::LogReader
+
+PROTOTYPES: ENABLE
+
+void
+new(class, filename)
+    const char *class
+    const char *filename
+
+    PREINIT:
+    Sparkey__LogReader log_reader;
+    sparkey_returncode rc;
+
+    PPCODE:
+    rc = sparkey_logreader_open(&log_reader, filename);
+    perl_sparkey_assert_error(rc);
+
+    PUSHs( sv_setref_pv(sv_newmortal(), class, (void*)log_reader) );
+
+MODULE = Sparkey		PACKAGE = Sparkey::LogReader::Iterator
+
+PROTOTYPES: ENABLE
+
+void
+new(class, log_reader)
+    const char *class
+    Sparkey::LogReader log_reader
+
+    PREINIT:
+    Sparkey__LogReader__Iterator log_iterator;
+    sparkey_returncode rc;
+
+    PPCODE:
+    rc = sparkey_logiter_create(&log_iterator, log_reader);
+    perl_sparkey_assert_error(rc);
+
+    PUSHs( sv_setref_pv(sv_newmortal(), class, (void*)log_iterator) );
 
 MODULE = Sparkey		PACKAGE = Sparkey::Hash
 
 PROTOTYPES: ENABLE
 
-# XS code
-
 const char *
-new(class, hash_filename, log_filename)
+testing_stuff(class, hash_filename, log_filename)
     const char * class
     const char * hash_filename 
     const char * log_filename

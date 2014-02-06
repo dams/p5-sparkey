@@ -22,12 +22,14 @@ unlink('plop.spl');
     is($logwriter->log_path(), "plop.spl", "->log_path works");
 
 #die  Dumper($logwriter); use Data::Dumper;
-    ok($logwriter->put("foo", 'bar'), "put works");
+    $logwriter->put("foo", 'bar');
 #    $log_path
 }
 
 # is( Sparkey::Hash->new("plop.spi","plop.spl"), '0.042', 'Hash function returns' );
 
+my $logreader = Sparkey::LogReader->new("plop.spl");
+my $logiterator = Sparkey::LogReader::Iterator->new($logreader);
 
 #$logwriter->put();
 

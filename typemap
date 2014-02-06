@@ -1,7 +1,9 @@
 TYPEMAP
 sparkey_compression_type SPARKEY_COMPRESSION_TYPE
 
-Sparkey__LogWriter T_PTROBJ
+Sparkey::LogWriter T_PTROBJ
+Sparkey::LogReader T_PTROBJ
+Sparkey::LogReader::Iterator T_PTROBJ
 
 OUTPUT
 

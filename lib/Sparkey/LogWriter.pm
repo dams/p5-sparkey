@@ -29,6 +29,7 @@ sub log_path {
 
 DESTROY {
     delete $inside_out{$_[0]};
+    $_[0]->close();
 }
 
 
